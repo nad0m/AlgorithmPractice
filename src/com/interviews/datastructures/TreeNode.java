@@ -69,6 +69,7 @@ public class TreeNode
      */
     public void printTree()
     {
+        double spacing = Math.pow(2, (double)this.getDepth());
         TreeNode root = this;
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
@@ -76,10 +77,11 @@ public class TreeNode
         while (!q.isEmpty())
         {
             int size = q.size();
+            System.out.print(getSpace(spacing * 0.75));
             for (int i = 0; i < size; i++)
             {
                 TreeNode node = q.poll();
-                System.out.print(node.data + " ");
+                System.out.print(node.data + getSpace(spacing));
 
                 if (node.left != null)
                 {
@@ -93,7 +95,50 @@ public class TreeNode
             }
 
             System.out.print("\n");
+            spacing = spacing / 2;
         }
+    }
+
+    private String getSpace(double amount)
+    {
+        String spacing = "";
+        for (double i = 0; i < amount; i++)
+            spacing += " ";
+
+        return spacing;
+    }
+
+    public int getDepth()
+    {
+        if (this == null)
+            return 0;
+
+        TreeNode root = this;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        int depth = 0;
+
+        while (!q.isEmpty())
+        {
+            int size = q.size();
+            for (int i = 0; i < size; i++)
+            {
+                TreeNode node = q.poll();
+                if (node.left != null)
+                {
+                    q.add(node.left);
+                }
+
+                if (node.right != null)
+                {
+                    q.add(node.right);
+                }
+            }
+
+            depth++;
+        }
+
+        return depth;
     }
 
 
