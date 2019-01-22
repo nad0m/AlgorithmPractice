@@ -1,44 +1,46 @@
 package com.interviews.datastructures;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class TreeNode
 {
-    TreeNode left;
-    TreeNode right;
-    int data;
+    public TreeNode left;
+    public TreeNode right;
+    private int val;
 
     /**
-     * TreeNode constructor (single data point).
-     * @param data
+     * TreeNode constructor (single val point).
+     * @param val
      */
-    public TreeNode(int data)
+    public TreeNode(int val)
     {
-        this.data = data;
+        this.val = val;
     }
 
     /**
-     * TreeNode constructor (multiple data points).
+     * TreeNode constructor (multiple val points).
      * @param data
      */
     public TreeNode(int[] data)
     {
         if (data.length > 0)
         {
-            this.data = data[0];
-        }
+            this.val = data[0];
 
-        for (int i = 1; i < data.length; i++) {
-            this.insert(data[i]);
+            for (int i = 1; i < data.length; i++) {
+                this.insert(data[i]);
+            }
         }
     }
 
     /**
-     * Inserts data at first available space (non-sorted).
-     * @param data
+     * Inserts val at first available space (non-sorted).
+     * @param val
      */
-    public void insert(int data)
+    public void insert(int val)
     {
         TreeNode temp = this;
         Queue<TreeNode> q = new LinkedList<>();
@@ -49,14 +51,14 @@ public class TreeNode
             TreeNode node = q.poll();
             if (node.left == null)
             {
-                node.left = new TreeNode(data);
+                node.left = new TreeNode(val);
                 break;
             } else {
                     q.add(node.left);
                 }
             if (node.right == null)
             {
-                node.right = new TreeNode(data);
+                node.right = new TreeNode(val);
                 break;
             } else {
                 q.add(node.right);
@@ -65,50 +67,52 @@ public class TreeNode
     }
 
     /**
-     * Prints the root along with all its children (level order traversal).
+     * Prints the root along with all its children.
      */
-    public void printTree()
+    public void displayTree()
     {
-        double spacing = Math.pow(2, (double)this.getDepth());
+        Stack<TreeNode> globalStack = new Stack();
         TreeNode root = this;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-
-        while (!q.isEmpty())
+        globalStack.push(root);
+        int emptyLeaf = 32;
+        boolean isRowEmpty = false;
+        System.out.println("****......................................................****");
+        while(isRowEmpty==false)
         {
-            int size = q.size();
-            System.out.print(getSpace(spacing * 0.75));
-            for (int i = 0; i < size; i++)
+
+            Stack<TreeNode> localStack = new Stack();
+            isRowEmpty = true;
+            for(int j=0; j<emptyLeaf; j++)
+                System.out.print(' ');
+            while(globalStack.isEmpty()==false)
             {
-                TreeNode node = q.poll();
-                System.out.print(node.data + getSpace(spacing));
-
-                if (node.left != null)
+                TreeNode temp = globalStack.pop();
+                if(temp != null)
                 {
-                    q.add(node.left);
+                    System.out.print(temp.val);
+                    localStack.push(temp.left);
+                    localStack.push(temp.right);
+                    if(temp.left != null ||temp.right != null)
+                        isRowEmpty = false;
                 }
-
-                if (node.right != null)
+                else
                 {
-                    q.add(node.right);
+                    System.out.print("--");
+                    localStack.push(null);
+                    localStack.push(null);
                 }
+                for(int j=0; j<emptyLeaf*2-2; j++)
+                    System.out.print(' ');
             }
-
-            System.out.print("\n");
-            spacing = spacing / 2;
+            System.out.println();
+            emptyLeaf /= 2;
+            while(localStack.isEmpty()==false)
+                globalStack.push( localStack.pop() );
         }
+        System.out.println("****......................................................****");
     }
 
-    private String getSpace(double amount)
-    {
-        String spacing = "";
-        for (double i = 0; i < amount; i++)
-            spacing += " ";
-
-        return spacing;
-    }
-
-    public int getDepth()
+    public int height()
     {
         if (this == null)
             return 0;
@@ -116,7 +120,7 @@ public class TreeNode
         TreeNode root = this;
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
-        int depth = 0;
+        int height = 0;
 
         while (!q.isEmpty())
         {
@@ -135,10 +139,10 @@ public class TreeNode
                 }
             }
 
-            depth++;
+            height++;
         }
 
-        return depth;
+        return height;
     }
 
 

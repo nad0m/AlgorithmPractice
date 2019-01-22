@@ -4,10 +4,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr = {3, 4, 5, 6, 2, 4, 2, 1, 3, 4, 5, 6, 2, 4, 2, 1, 3};
+        int[] arr = {3};
         TreeNode root = new TreeNode(arr);
 
-        root.printTree();
+        root.left = new TreeNode(2);
+        root.left.right = new TreeNode(3);
+        root.left.right.left = new TreeNode(4);
+        root.left.right.left.right = new TreeNode(5);
+
+        root.displayTree();
 
     }
 }
