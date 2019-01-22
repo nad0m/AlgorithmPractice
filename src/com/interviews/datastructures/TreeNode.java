@@ -112,6 +112,55 @@ public class TreeNode
         System.out.println("****......................................................****");
     }
 
+    /**
+     * Returns the absolute difference of the left subtree and right subtree
+     *
+     * Given a binary tree, return the tilt of the whole tree.
+     * The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values
+     * and the sum of all right subtree node values. Null node has tilt 0.
+     * The tilt of the whole tree is defined as the sum of all nodes' tilt.
+     *
+     */
+    public int findTilt(TreeNode root) {
+        if (root.left == null && root.right == null)
+        {
+            return 0;
+        }
+
+        if (root.left == null)
+        {
+            return root.right.val;
+        }
+
+        else if (root.right == null)
+        {
+            return root.left.val;
+        }
+
+        return Math.abs(tilt(root.left) - tilt(root.right));
+    }
+
+    public int tilt (TreeNode node)
+    {
+        if (node == null)
+            return 0;
+
+        int left = 0;
+        int right = 0;
+
+        if (node.left != null)
+        {
+            left = node.left.val;
+        }
+
+        if (node.right != null)
+        {
+            right = node.right.val;
+        }
+
+        return Math.abs(right - left);
+    }
+
     public int height()
     {
         if (this == null)
