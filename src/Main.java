@@ -4,14 +4,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr = {3, 4, 5, 6, 7, 8, 9};
+        int[] arr = {3, 3, 5, 5, 7, 8, 9};
         TreeNode root = new TreeNode(arr);
 
 
 
         root.displayTree();
 
-        System.out.print(root.findTilt(root));
+        TreeNode.postOrder(root);
+
+        System.out.println("\n" + root.findTilt(root));
 
     }
 }

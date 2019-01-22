@@ -10,6 +10,7 @@ public class TreeNode
     public TreeNode left;
     public TreeNode right;
     private int val;
+    public int tilt;
 
     /**
      * TreeNode constructor (single val point).
@@ -113,6 +114,23 @@ public class TreeNode
     }
 
     /**
+     * Prints in post order.
+     */
+    public static void postOrder(TreeNode node)
+    {
+        if (node == null)
+            return;
+
+        //recur all left branches
+        postOrder(node.left);
+
+        //recur all right branches
+        postOrder(node.right);
+
+        System.out.print(node.val + " ");
+    }
+
+    /**
      * Returns the absolute difference of the left subtree and right subtree
      *
      * Given a binary tree, return the tilt of the whole tree.
@@ -121,44 +139,30 @@ public class TreeNode
      * The tilt of the whole tree is defined as the sum of all nodes' tilt.
      *
      */
-    public int findTilt(TreeNode root) {
-        if (root.left == null && root.right == null)
+    public int findTilt(TreeNode node) {
+        if (node == null)
         {
             return 0;
         }
 
-        if (root.left == null)
-        {
-            return root.right.val;
-        }
+        tiltTraverse(node);
 
-        else if (root.right == null)
-        {
-            return root.left.val;
-        }
-
-        return Math.abs(tilt(root.left) - tilt(root.right));
+        return tilt;
     }
 
-    public int tilt (TreeNode node)
+    private int tiltTraverse (TreeNode node)
     {
         if (node == null)
+        {
             return 0;
-
-        int left = 0;
-        int right = 0;
-
-        if (node.left != null)
-        {
-            left = node.left.val;
         }
 
-        if (node.right != null)
-        {
-            right = node.right.val;
-        }
+        int left = tiltTraverse(node.left);
+        int right = tiltTraverse(node.right);
 
-        return Math.abs(right - left);
+        tilt += Math.abs(left-right);
+
+        return left + right + node.val;
     }
 
     public int height()
