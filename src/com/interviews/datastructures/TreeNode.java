@@ -32,16 +32,16 @@ public class TreeNode
             this.val = data[0];
 
             for (int i = 1; i < data.length; i++) {
-                this.insert(data[i]);
+                this.insert(new TreeNode(data[i]));
             }
         }
     }
 
     /**
      * Inserts val at first available space (non-sorted).
-     * @param val
+     * @param newNode
      */
-    public void insert(int val)
+    public void insert(TreeNode newNode)
     {
         TreeNode temp = this;
         Queue<TreeNode> q = new LinkedList<>();
@@ -52,14 +52,14 @@ public class TreeNode
             TreeNode node = q.poll();
             if (node.left == null)
             {
-                node.left = new TreeNode(val);
+                node.left = newNode;
                 break;
             } else {
                     q.add(node.left);
                 }
             if (node.right == null)
             {
-                node.right = new TreeNode(val);
+                node.right = newNode;
                 break;
             } else {
                 q.add(node.right);
@@ -90,7 +90,13 @@ public class TreeNode
                 TreeNode temp = globalStack.pop();
                 if(temp != null)
                 {
-                    System.out.print(temp.val);
+                    if (temp.val == -1)
+                    {
+                        System.out.print("--");
+                    } else {
+                        System.out.print(temp.val);
+                    }
+
                     localStack.push(temp.left);
                     localStack.push(temp.right);
                     if(temp.left != null ||temp.right != null)
@@ -163,6 +169,38 @@ public class TreeNode
         tilt += Math.abs(left-right);
 
         return left + right + node.val;
+    }
+
+    public static int rangeSumBST(TreeNode root, int L, int R)
+    {
+        if (root == null)
+            return 0;
+
+        int sum = 0;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.isEmpty())
+        {
+            TreeNode node = stack.pop();
+            if (node != null)
+            {
+                if (node.val >= L && node.val <= R)
+                    sum += node.val;
+
+                if (node.val > L)
+                {
+                    stack.push(node.left);
+                }
+
+                if (node.val < R)
+                {
+                    stack.push(node.right);
+                }
+            }
+        }
+
+        return sum;
     }
 
     public int height()

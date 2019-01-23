@@ -4,16 +4,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr = {3, 3, 5, 5, 7, 8, 9};
+        int[] arr = {10,5,15,3,7,13,18,1,-1,6};
         TreeNode root = new TreeNode(arr);
 
 
 
         root.displayTree();
 
-        TreeNode.postOrder(root);
 
-        System.out.println("\n" + root.findTilt(root));
+        System.out.println("range sum: " + TreeNode.rangeSumBST(root, 6, 10));
 
     }
 }
