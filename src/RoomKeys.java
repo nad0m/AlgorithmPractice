@@ -1,20 +1,35 @@
+/**
+ * Created by Huy Nguyen on 01/23/2019.
+ */
+
 import java.util.*;
 
 public class RoomKeys
 {
-    public static boolean canVisitAllRooms(int[][] rooms)
-    {
-        boolean[] visitHash = new boolean[rooms.length];
-        visitHash[0] = true;
+    /**
+     * BFS iterative approach
+     * @param rooms
+     * @return
+     */
+    public static boolean canVisitAllRoomsBFS(List<List<Integer>> rooms) {
 
-        for (int i = 0; i < rooms.length; i++)
+        boolean[] visitHash = new boolean[rooms.size()];
+        Queue<List<Integer>> queue = new LinkedList<>();
+
+        queue.add(rooms.get(0)); // visit first room at index 0
+        visitHash[0] = true; // mark as visited
+
+        while (!queue.isEmpty())
         {
-            // if we have key for room i, enter room and grab key(s)
-            if (visitHash[i])
+            List<Integer> room = queue.poll(); // grab key(s)
+
+            for (int key : room)
             {
-                for (int key : rooms[i])
+                // if we have not visited the room, use key to enter
+                if (!visitHash[key])
                 {
-                    visitHash[key] = true;
+                    queue.add(rooms.get(key)); // visit room at index key
+                    visitHash[key] = true; // mark as visited
                 }
             }
         }
@@ -22,6 +37,43 @@ public class RoomKeys
         return allRoomsVisited(visitHash);
     }
 
+    /**
+     * DFS iterative approach
+     * @param rooms
+     * @return
+     */
+    public static boolean canVisitAllRoomsDFS(List<List<Integer>> rooms) {
+
+        boolean[] visitHash = new boolean[rooms.size()];
+        Stack<List<Integer>> stack = new Stack<>();
+
+        stack.add(rooms.get(0)); // visit first room at index 0
+        visitHash[0] = true; // mark as visited
+
+        while (!stack.isEmpty())
+        {
+            List<Integer> room = stack.pop(); // grab key(s)
+
+            for (int key : room)
+            {
+                // if we have not visited the room, use key to enter
+                if (!visitHash[key])
+                {
+                    stack.add(rooms.get(key)); // visit room at index key
+                    visitHash[key] = true; // mark as visited
+                }
+            }
+        }
+
+        return allRoomsVisited(visitHash);
+
+    }
+
+    /**
+     * Check if all rooms visited
+     * @param visitHash
+     * @return
+     */
     public static boolean allRoomsVisited(boolean[] visitHash)
     {
         for (boolean visited : visitHash)
@@ -33,22 +85,44 @@ public class RoomKeys
         return true;
     }
 
+    /**
+     * Driver
+     * @param args
+     */
     public static void main(String[] args)
     {
-        int[][] room = {    {1, 3},
-                            {3, 0, 1},
-                            {2},
-                            {0},
-                                 };
 
-        int[][] room2 = {   {1},
-                            {2},
-                            {3},
+        Integer[][] rooms = {
+                            {6,7,8},
+                            {5,4,9},
                             {},
-                                };
+                            {8},
+                            {4},
+                            {},
+                            {1,9,2,3},
+                            {7},
+                            {6,5},
+                            {2,3,1}
+                                    };
 
-        System.out.println("Room: " + canVisitAllRooms(room));
-        System.out.println("Room2: " + canVisitAllRooms(room2));
+
+        System.out.println("BFS: " + canVisitAllRoomsBFS(twoDArrayToList(rooms)));
+        System.out.println("DFS: " + canVisitAllRoomsDFS(twoDArrayToList(rooms)));
+    }
+
+
+    /**
+     * Helper: convery primitive 2D arrays into 2D lists
+     * @param twoDArray
+     * @return
+     */
+    public static List<List<Integer>> twoDArrayToList(Integer[][] twoDArray) {
+        List list = new ArrayList();
+        for (Integer[] array : twoDArray) {
+            list.add(Arrays.asList(array));
+        }
+
+        return list;
     }
 
 }
