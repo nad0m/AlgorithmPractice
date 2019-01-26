@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr = {10,5,15,3,7,13,18,1,-1,6};
+        int[] arr = {1,2,3,4,-1,2,4,-1,-1};
         TreeNode root = new TreeNode(arr);
 
 
@@ -12,7 +12,10 @@ public class Main {
         root.displayTree();
 
 
-        System.out.println("range sum: " + TreeNode.rangeSumBST(root, 6, 10));
+        Codec codec = new Codec();
+
+        System.out.println("serialize: " + codec.serialize(root));
+
 
     }
 }

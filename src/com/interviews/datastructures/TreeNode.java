@@ -6,7 +6,7 @@ public class TreeNode
 {
     public TreeNode left;
     public TreeNode right;
-    private int val;
+    public int val;
     public int tilt;
 
     /**
@@ -29,7 +29,7 @@ public class TreeNode
             this.val = data[0];
 
             for (int i = 1; i < data.length; i++) {
-                this.insert(new TreeNode(data[i]));
+                this.BSTinsert(new TreeNode(data[i]));
             }
         }
     }
@@ -60,6 +60,40 @@ public class TreeNode
                 break;
             } else {
                 q.add(node.right);
+            }
+        }
+    }
+
+    /**
+     * Inserts val at first available space (non-sorted).
+     * @param newNode
+     */
+    public void BSTinsert(TreeNode newNode)
+    {
+        TreeNode temp = this;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(temp);
+
+        while (!q.isEmpty())
+        {
+            TreeNode node = q.poll();
+
+            if (newNode.val < node.val)
+            {
+                if (node.left == null)
+                {
+                    node.left = newNode;
+                    break;
+                } else {
+                    q.add(node.left);
+                }
+            } else {
+                if (node.right == null) {
+                    node.right = newNode;
+                    break;
+                } else {
+                    q.add(node.right);
+                }
             }
         }
     }
